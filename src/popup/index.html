@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Blurrer Settings</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 w-80 p-4 font-sans">
+
+<div id="app">
+    <div class="flex border-b border-gray-300 mb-4">
+        <button id="tab-settings" class="px-4 py-2 -mb-px border-b-2 border-blue-500 text-blue-500 font-semibold focus:outline-none">Настройки</button>
+        <button id="tab-sites" class="px-4 py-2 text-gray-500 font-semibold focus:outline-none">Сайты</button>
+    </div>
+
+    <div id="content-settings">
+        <div class="flex items-center justify-between mb-4">
+            <label for="enabled-toggle" class="font-bold">Включить размытие</label>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="enabled-toggle" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+        </div>
+
+        <div class="mb-4">
+            <label for="blur-slider" class="block font-bold mb-2">Сила размытия: <span id="blur-value">10px</span></label>
+            <input id="blur-slider" type="range" min="0" max="20" value="10" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer">
+        </div>
+
+        <div class="mb-4">
+            <p class="font-bold mb-2">Режим работы</p>
+            <div class="flex space-x-4">
+                <label class="flex items-center">
+                    <input type="radio" name="mode" value="blacklist" class="form-radio text-blue-500">
+                    <span class="ml-2">Размывать везде, кроме...</span>
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="mode" value="whitelist" class="form-radio text-blue-500">
+                    <span class="ml-2">Только на...</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="content-sites" class="hidden">
+        <p id="sites-description" class="text-sm text-gray-600 mb-3"></p>
+        <div class="flex mb-4">
+            <input type="text" id="site-input" placeholder="example.com" class="flex-grow p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-300">
+            <button id="add-site-btn" class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 focus:outline-none">Добавить</button>
+        </div>
+        <button id="add-current-site-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors mb-4">
+            Добавить текущий сайт
+        </button>
+
+
+        <ul id="sites-list" class="bg-white rounded-md border border-gray-300 max-h-40 overflow-y-auto">
+        </ul>
+    </div>
+</div>
+
+<script type="module" src="./index.js"></script>
+</body>
+</html>

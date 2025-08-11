@@ -1,0 +1,13 @@
+# Dependencies
+/node_modules
+
+# Vite build output
+/dist
+
+# IDE config files
+.idea/*
+.vscode/
+
+# Environment variables
+.env*
+*.zip
