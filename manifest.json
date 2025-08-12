@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Image Blurrer (Vite)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatically blurs images on webpages with advanced controls.",
   "browser_specific_settings": {
     "gecko": {
@@ -21,7 +21,7 @@
     "scripts":["dist/background.js"]
   },
   "action": {
-    "default_popup": "index.html",
+    "default_popup": "dist/src/popup/index.html",
     "default_icon": {
       "16":  "icons/icon-16.png",
       "32":  "icons/icon-32.png",

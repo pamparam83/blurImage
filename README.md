@@ -37,7 +37,7 @@
 **1. Клонируйте репозиторий**
 
 ```bash
-git clone [https://github.com/your-username/firefox-blur-addon.git](https://github.com/your-username/firefox-blur-addon.git)
+git clone [https://github.com/pamparam83/blurImage.git](https://github.com/pamparam83/blurImage.git)
 cd firefox-blur-addon
 ```
 2. Установите зависимости
