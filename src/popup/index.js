@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         controls: {
             enabledToggle: document.getElementById('enabled-toggle'),
+            hoverToggle: document.getElementById('hover-toggle'),
             blurSlider: document.getElementById('blur-slider'),
             blurValue: document.getElementById('blur-value'),
             modeRadios: document.querySelectorAll('input[name="mode"]')
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const data = await browserAPI.storage.local.get(null);
         settings = {
             isEnabled: data.isEnabled ?? true,
+            hoverUnblur: data.hoverUnblur ?? true,
             blurAmount: data.blurAmount ?? 10,
             mode: data.mode ?? 'blacklist',
             sites: data.sites ?? [],
@@ -49,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateUI() {
         // Настройки
         UIElements.controls.enabledToggle.checked = settings.isEnabled;
+        UIElements.controls.hoverToggle.checked = settings.hoverUnblur;
         UIElements.controls.blurSlider.value = settings.blurAmount;
         UIElements.controls.blurValue.textContent = `${settings.blurAmount}px`;
         document.querySelector(`input[name="mode"][value="${settings.mode}"]`).checked = true;
@@ -105,7 +108,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         list.append(frag);
     }
 
-
     // --- Обработчики событий ---
 
     // Переключение табов
@@ -132,6 +134,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         saveSettings();
     });
 
+    UIElements.controls.hoverToggle.addEventListener('change', (e) => {
+        settings.hoverUnblur = e.target.checked;
+        saveSettings();
+    });
+
     UIElements.controls.blurSlider.addEventListener('input', (e) => {
         settings.blurAmount = e.target.value;
         UIElements.controls.blurValue.textContent = `${settings.blurAmount}px`;
@@ -141,7 +148,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         settings.blurAmount = e.target.value;
         saveSettings();
     });
-
 
     UIElements.controls.modeRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
@@ -190,7 +196,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         UIElements.sites.input.value = '';
     }
-
 
     // Инициализация
     loadSettings();

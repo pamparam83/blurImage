@@ -6,6 +6,7 @@ console.log("Image Blurrer content script loaded.");
 
 let settings = {};
 let styleElement = null;
+let hoverStyleElement = null;
 
 // Функция для применения или обновления стилей размытия
 function applyBlurStyles() {
@@ -14,7 +15,12 @@ function applyBlurStyles() {
         document.documentElement.appendChild(styleElement);
     }
 
-    const { isEnabled, blurAmount, mode, sites } = settings;
+    if (!hoverStyleElement) {
+        hoverStyleElement = document.createElement('style');
+        document.documentElement.appendChild(hoverStyleElement);
+    }
+
+    const { isEnabled, blurAmount, mode, sites, hoverUnblur } = settings;
     const currentHostname = window.location.hostname;
 
     let shouldBlur = false;
@@ -28,14 +34,27 @@ function applyBlurStyles() {
     }
 
     if (shouldBlur) {
+        // Основные стили размытия
         styleElement.textContent = `
-      img, video, [style*="background-image"] {
-        filter: blur(${blurAmount}px) !important;
-        transition: filter 0.2s ease-in-out;
-      }
-    `;
+            img, video, [style*="background-image"] {
+                filter: blur(${blurAmount}px) !important;
+                transition: filter 0.2s ease-in-out;
+            }
+        `;
+
+        // Стили для снятия размытия при наведении
+        if (hoverUnblur) {
+            hoverStyleElement.textContent = `
+                img:hover, video:hover, [style*="background-image"]:hover {
+                    filter: blur(0px) !important;
+                }
+            `;
+        } else {
+            hoverStyleElement.textContent = '';
+        }
     } else {
         styleElement.textContent = '';
+        hoverStyleElement.textContent = '';
     }
 }
 
@@ -44,16 +63,15 @@ function applyManualBlur() {
     const manualStyle = document.createElement('style');
     document.documentElement.appendChild(manualStyle);
     manualStyle.textContent = `
-      img, video, [style*="background-image"] {
-        filter: blur(10px) !important;
-        transition: filter 0.2s ease-in-out;
-      }
+        img, video, [style*="background-image"] {
+            filter: blur(10px) !important;
+            transition: filter 0.2s ease-in-out;
+        }
     `;
     setTimeout(() => {
         manualStyle.remove();
     }, 5000);
 }
-
 
 // Загружаем настройки и применяем стили при запуске
 async function initialize() {
@@ -63,6 +81,7 @@ async function initialize() {
         blurAmount: data.blurAmount ?? 10,
         mode: data.mode ?? 'blacklist',
         sites: data.sites ?? [],
+        hoverUnblur: data.hoverUnblur ?? true, // Новая настройка
     };
     applyBlurStyles();
 }
@@ -84,7 +103,5 @@ browserAPI.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-
 // Инициализация при загрузке скрипта
-// `run_at: document_start` гарантирует, что это произойдет максимально рано
 initialize();
